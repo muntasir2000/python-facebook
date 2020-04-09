@@ -1,26 +1,26 @@
 """
     This is the base model
 """
-import six
+from typing import Dict, Type, TypeVar
+from dataclasses import dataclass
 
-import cattr
-from attr import attrs
+from dataclasses_json import dataclass_json, DataClassJsonMixin
+
+A = TypeVar('A', bound=DataClassJsonMixin)
 
 
-@attrs
-class BaseModel(object):
-
-    @classmethod
-    def drop_extra_attrs(cls, data):
-        attrs_attrs = getattr(cls, '__attrs_attrs__', None)
-        attributes = {attr.name for attr in attrs_attrs}
-        return {key: val for key, val in six.iteritems(data) if key in attributes}
+@dataclass_json
+@dataclass
+class BaseModel:
 
     @classmethod
-    def new_from_json_dict(cls, data):
-        data = cls.drop_extra_attrs(data)
-        instance = cattr.structure(data, cls)
-        return instance
-
-    def as_dict(self):
-        return cattr.unstructure(self)
+    def new_from_json_dict(cls: Type[A], data: Dict, *, infer_missing=False) -> A:
+        """
+        :param data: A json dict which converted from facebook API.
+        :param infer_missing: if set true, will let missing filed (not have default) to None.
+        :return:
+        """
+        c = cls.from_dict(data, infer_missing=infer_missing)
+        # save the origin data for some
+        cls._json = data
+        return c
