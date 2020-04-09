@@ -1,28 +1,27 @@
 """
    These some models for facebook picture entity.
 """
-from attr import attrs, attrib
+from dataclasses import dataclass, field
 from typing import Optional
 
 from .base import BaseModel
-from .._compat import str
 
 
-@attrs
+@dataclass
 class CoverPhoto(BaseModel):
     """
     A class representing the cover photo info.
 
     Refer: https://developers.facebook.com/docs/graph-api/reference/cover-photo/
     """
-    id = attrib(default=None, type=Optional[str])
-    cover_id = attrib(default=None, type=Optional[str], repr=False)
-    offset_x = attrib(default=None, type=Optional[float], repr=False)
-    offset_y = attrib(default=None, type=Optional[float], repr=False)
-    source = attrib(default=None, type=Optional[str])
+    id: Optional[str] = field(default=None)
+    source: Optional[str] = field(default=None)
+    cover_id: Optional[str] = field(default=None, repr=False)
+    offset_x: Optional[float] = field(default=None, repr=False)
+    offset_y: Optional[float] = field(default=None, repr=False)
 
 
-@attrs
+@dataclass
 class ProfilePictureSource(BaseModel):
     """
     A class representing the profile picture source info
@@ -30,20 +29,20 @@ class ProfilePictureSource(BaseModel):
     Refer: https://developers.facebook.com/docs/graph-api/reference/profile-picture-source/
     """
 
-    cache_key = attrib(default=None, type=Optional[str], repr=False)
-    url = attrib(default=None, type=Optional[str])
-    height = attrib(default=None, type=Optional[int])
-    width = attrib(default=None, type=Optional[int])
-    is_silhouette = attrib(default=None, type=Optional[bool], repr=False)
+    height: Optional[str] = field(default=None)
+    width: Optional[int] = field(default=None)
+    url: Optional[int] = field(default=None)
+    cache_key: Optional[str] = field(default=None, repr=False)
+    is_silhouette: Optional[str] = field(default=None, repr=False)
 
 
-@attrs
+@dataclass
 class ImageSource(BaseModel):
     """
     A class representing the image source info.
 
     Structure will be {"height": 10, "width": 10, "src": "https://xxxx"}
     """
-    height = attrib(default=None, type=Optional[int], repr=False)
-    width = attrib(default=None, type=Optional[int], repr=False)
-    src = attrib(default=None, type=Optional[str])
+    height: Optional[int] = field(default=None)
+    width: Optional[int] = field(default=None)
+    src: Optional[str] = field(default=None)

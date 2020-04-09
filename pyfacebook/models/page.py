@@ -4,16 +4,14 @@
     Note:
         Some field which not common used has not include.
 """
-import cattr
-from typing import Dict, Optional, List
-from attr import attrs, attrib
+from typing import Optional, List, Union
+from dataclasses import dataclass, field
 
 from .base import BaseModel
 from .picture import CoverPhoto, ProfilePictureSource
-from .._compat import str
 
 
-@attrs
+@dataclass
 class PageCategory(BaseModel):
     """
     A class representing the page category info.
@@ -21,39 +19,29 @@ class PageCategory(BaseModel):
     Refer: https://developers.facebook.com/docs/graph-api/reference/page-category/
     """
 
-    id = attrib(default=None, type=Optional[str])
-    api_enum = attrib(default=None, type=Optional[str], repr=False)
-    fb_page_categories = attrib(default=None, type=Optional[List], repr=False)
-    name = attrib(default=None, type=Optional[str])
-
-    def __attrs_post_init__(self):
-        """
-        Because field for fb_page_categories is a list of categories which same structure as PageCategory.
-        So need init by hands.
-        """
-        if isinstance(self.fb_page_categories, (list, tuple)):
-            self.fb_page_categories = [cattr.structure(item, PageCategory) for item in self.fb_page_categories]
-        else:
-            pass
+    id: Optional[str] = field(default=None)
+    name: Optional[str] = field(default=None)
+    api_enum: Optional[str] = field(default=None, repr=False)
+    fb_page_categories: Optional[List["PageCategory"]] = field(default=None, repr=False)
 
 
-@attrs
+@dataclass
 class ContactAddress(BaseModel):
     """
     A class representing the mailing address info.
 
     Refer: https://developers.facebook.com/docs/graph-api/reference/mailing-address/
     """
-    id = attrib(default=None, type=Optional[str])
-    city = attrib(default=None, type=Optional[str])
-    country = attrib(default=None, type=Optional[str])
-    postal_code = attrib(default=None, type=Optional[str], repr=False)
-    region = attrib(default=None, type=Optional[str], repr=False)
-    street1 = attrib(default=None, type=Optional[str], repr=False)
-    street2 = attrib(default=None, type=Optional[str], repr=False)
+    id: Optional[str] = field(default=None)
+    city: Optional[str] = field(default=None)
+    country: Optional[str] = field(default=None)
+    postal_code: Optional[str] = field(default=None, repr=False)
+    region: Optional[str] = field(default=None, repr=False)
+    street1: Optional[str] = field(default=None, repr=False)
+    street2: Optional[str] = field(default=None, repr=False)
 
 
-@attrs
+@dataclass
 class PageEngagement(BaseModel):
     """
     A class representing the page engagement info.
@@ -61,39 +49,39 @@ class PageEngagement(BaseModel):
     Refer: https://developers.facebook.com/docs/graph-api/reference/engagement/
     """
 
-    count = attrib(default=None, type=Optional[int])
-    count_string = attrib(default=None, type=Optional[str], repr=False)
-    count_string_with_like = attrib(default=None, type=Optional[str], repr=False)
-    count_string_without_like = attrib(default=None, type=Optional[str], repr=False)
-    social_sentence = attrib(default=None, type=Optional[str])
-    social_sentence_with_like = attrib(default=None, type=Optional[str], repr=False)
-    social_sentence_without_like = attrib(default=None, type=Optional[str], repr=False)
+    count: Optional[int] = field(default=None)
+    count_string: Optional[str] = field(default=None, repr=False)
+    count_string_with_like: Optional[str] = field(default=None, repr=False)
+    count_string_without_like: Optional[str] = field(default=None, repr=False)
+    social_sentence: Optional[str] = field(default=None)
+    social_sentence_with_like: Optional[str] = field(default=None, repr=False)
+    social_sentence_without_like: Optional[str] = field(default=None, repr=False)
 
 
-@attrs
+@dataclass
 class PageStartDate(BaseModel):
     """
     A class representing the page start date info.
 
     Refer: https://developers.facebook.com/docs/graph-api/reference/page-start-date/
     """
-    day = attrib(default=None, type=Optional[int])
-    month = attrib(default=None, type=Optional[int])
-    year = attrib(default=None, type=Optional[int])
+    day: Optional[int] = field(default=None)
+    month: Optional[int] = field(default=None)
+    year: Optional[int] = field(default=None)
 
 
-@attrs
+@dataclass
 class PageStartInfo(BaseModel):
     """
     A class representing the page start info.
 
     Refer: https://developers.facebook.com/docs/graph-api/reference/page-start-info/
     """
-    date = attrib(default=None, type=Optional[PageStartDate])
-    type = attrib(default=None, type=Optional[str])
+    date: Optional[PageStartDate] = field(default=None)
+    type: Optional[str] = field(default=None)
 
 
-@attrs
+@dataclass
 class Page(BaseModel):
     """
     A class representing the page info.
@@ -101,41 +89,41 @@ class Page(BaseModel):
     Refer: https://developers.facebook.com/docs/graph-api/reference/page/
     """
 
-    id = attrib(default=None, type=Optional[str])
-    about = attrib(default=None, type=Optional[str], repr=False)
-    can_checkin = attrib(default=None, type=Optional[bool], repr=False)
-    category = attrib(default=None, type=Optional[str], repr=False)
-    category_list = attrib(default=None, type=Optional[List[PageCategory]], repr=False)
-    checkins = attrib(default=None, type=Optional[int], repr=False)
-    contact_address = attrib(default=None, type=Optional[ContactAddress], repr=False)
-    cover = attrib(default=None, type=Optional[CoverPhoto], repr=False)
-    current_location = attrib(default=None, type=Optional[str], repr=False)
-    description = attrib(default=None, type=Optional[str], repr=False)
-    description_html = attrib(default=None, type=Optional[str], repr=False)
-    display_subtext = attrib(default=None, type=Optional[str], repr=False)
-    emails = attrib(default=None, type=Optional[List[str]], repr=False)
-    engagement = attrib(default=None, type=Optional[PageEngagement], repr=False)
-    fan_count = attrib(default=None, type=Optional[int], repr=False)
-    founded = attrib(default=None, type=Optional[str], repr=False)
-    general_info = attrib(default=None, type=Optional[str], repr=False)
-    global_brand_page_name = attrib(default=None, type=Optional[str], repr=False)
-    global_brand_root_id = attrib(default=None, type=Optional[str], repr=False)
-    link = attrib(default=None, type=Optional[str], repr=False)
-    name = attrib(default=None, type=Optional[str])
-    # name_with_location_descriptor = attrib(default=None, type=Optional[str], repr=False)
-    phone = attrib(default=None, type=Optional[str], repr=False)
-    picture = attrib(default=None, type=Optional[Dict], repr=False)
-    rating_count = attrib(default=None, type=Optional[str], repr=False)
-    single_line_address = attrib(default=None, type=Optional[str], repr=False)
-    start_info = attrib(default=None, type=Optional[PageStartInfo], repr=False)
-    talking_about_count = attrib(default=None, type=Optional[int], repr=False)
-    username = attrib(default=None, type=Optional[str])
-    verification_status = attrib(default=None, type=Optional[str], repr=False)
-    website = attrib(default=None, type=Optional[str], repr=False)
-    were_here_count = attrib(default=None, type=Optional[int], repr=False)
-    whatsapp_number = attrib(default=None, type=Optional[str], repr=False)
+    id: str
+    name: Optional[str] = field(default=None)
+    username: Optional[str] = field(default=None)
+    about: Optional[str] = field(default=None, repr=False)
+    can_checkin: Optional[bool] = field(default=None, repr=False)
+    category: Optional[str] = field(default=None, repr=False)
+    category_list: Optional[List[PageCategory]] = field(default=None, repr=False)
+    checkins: Optional[int] = field(default=None, repr=False)
+    contact_address: Optional[str] = field(default=None, repr=False)
+    cover: Optional[CoverPhoto] = field(default=None, repr=False)
+    current_location: Optional[str] = field(default=None, repr=False)
+    description: Optional[str] = field(default=None, repr=False)
+    description_html: Optional[str] = field(default=None, repr=False)
+    display_subtext: Optional[str] = field(default=None, repr=False)
+    emails: Optional[List[str]] = field(default=None, repr=False)
+    engagement: Optional[PageEngagement] = field(default=None, repr=False)
+    fan_count: Optional[int] = field(default=None, repr=False)
+    founded: Optional[str] = field(default=None, repr=False)
+    general_info: Optional[str] = field(default=None, repr=False)
+    global_brand_page_name: Optional[str] = field(default=None, repr=False)
+    global_brand_root_id: Optional[str] = field(default=None, repr=False)
+    link: Optional[str] = field(default=None, repr=False)
+    name_with_location_descriptor: Optional[str] = field(default=None, repr=False)
+    phone: Optional[str] = field(default=None, repr=False)
+    picture: Optional[Union[dict, ProfilePictureSource]] = field(default=None, repr=False)
+    rating_count: Optional[str] = field(default=None, repr=False)
+    single_line_address: Optional[str] = field(default=None, repr=False)
+    start_info: Optional[PageStartInfo] = field(default=None, repr=False)
+    talking_about_count: Optional[int] = field(default=None, repr=False)
+    verification_status: Optional[str] = field(default=None, repr=False)
+    website: Optional[str] = field(default=None, repr=False)
+    were_here_count: Optional[int] = field(default=None, repr=False)
+    whatsapp_number: Optional[str] = field(default=None, repr=False)
 
-    def __attrs_post_init__(self):
+    def __post_init__(self):
         if self.picture is not None and isinstance(self.picture, dict):
             picture = self.picture.get("data", {})
             self.picture = ProfilePictureSource.new_from_json_dict(picture)
