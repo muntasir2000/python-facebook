@@ -21,6 +21,6 @@ class BaseModel:
         :return:
         """
         c = cls.from_dict(data, infer_missing=infer_missing)
-        # save the origin data for some
+        # save the origin data for other usage
         cls._json = data
         return c

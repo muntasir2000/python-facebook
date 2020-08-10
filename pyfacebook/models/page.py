@@ -11,6 +11,14 @@ from .base import BaseModel
 from .picture import CoverPhoto, ProfilePictureSource
 
 
+class StoryTag(BaseModel):
+    id: Optional[str] = field(default=None)
+    name: Optional[str] = field(default=None)
+    type: Optional[str] = field(default=None)
+    offset: Optional[str] = field(default=None)
+    length: Optional[str] = field(default=None)
+
+
 @dataclass
 class PageCategory(BaseModel):
     """
