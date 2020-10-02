@@ -1,6 +1,7 @@
 """
     Facebook Graph Api impl
 """
+import arrow
 from six import iteritems
 from typing import Optional, Union, List, Tuple, Set
 
@@ -408,6 +409,7 @@ class Api(BaseApi):
                                count=10,  # type: Optional[int]
                                limit=50,  # type: int
                                return_json=False  # type: bool
+
                                ):
         # type: (...) -> (List[Union[Comment, dict]], Union[CommentSummary, dict])
         """
@@ -466,6 +468,80 @@ class Api(BaseApi):
                     comments = comments[:count]
                     break
             if next_cursor is None:
+                break
+        return comments, comment_summary
+
+    def get_comments_by_object_until_date(self,
+                               object_id,  # type: str
+                               summary=True,  # type: bool
+                               fields=None,  # type: Optional[Union[str, List, Tuple, Set]]
+                               # count=10,  # type: Optional[int]
+                               limit=50,  # type: int
+                               until_date=None,  # type:
+                               ):
+        # type: (...) -> (List[Union[Comment, dict]], Union[CommentSummary, dict])
+        """
+        Retrieve object's comments.
+
+        Refer: https://developers.facebook.com/docs/graph-api/reference/v4.0/object/comments.
+
+        :param object_id: The id for object(post, photo..)
+        :param summary: The summary for comments
+        :param fields: Comma-separated id string for data fields which you want.
+        You can also pass this with an id list, tuple, set.
+        :param filter_type: Valid params are toplevel/stream,
+                If you chose toplevel only return top level comment.
+                stream will return parent and child comment.
+                default is toplevel
+        :param order_type: Valid params are chronological/reverse_chronological,
+                If chronological, will return comments sorted by the oldest comments first.
+                If reverse_chronological, will return comments sorted by the newest comments first.
+        :param count: The count will retrieve posts. If you want to get all data. Set it to None.
+        :param limit: Each request retrieve posts count from api. For posts it should no more than 100.
+        :param return_json: Set to false will return a list of Comment instances.
+        Or return json data. Default is false.
+        """
+        if fields is None:
+            fields = constant.FB_COMMENT_BASIC_FIELDS
+
+        if until_date is not None:
+            until_date_arrow = arrow.get(until_date)
+        else:
+            until_date_arrow = None
+
+        args = {
+            'fields': enf_comma_separated("fields", fields),
+            'summary': summary,
+            'filter': 'stream',
+            'order': 'reverse_chronological',
+            'limit': limit,
+        }
+
+        comments = []
+        next_cursor = None
+
+        while True:
+            next_cursor, previous_cursor, data = self.paged_by_cursor(
+                resource='comments',
+                target=object_id,
+                args=args,
+                next_cursor=next_cursor
+            )
+            reached_until = False
+            this_iter_comments = [Comment.new_from_json_dict(item) for item in data.get('data', [])]
+
+            for comment in this_iter_comments:
+                created_time_arrow = arrow.get(comment.created_time)
+                if created_time_arrow < until_date_arrow:
+                    reached_until = True
+                    break
+                comments.append(comment)
+
+            comment_summary = CommentSummary.new_from_json_dict(data.get('summary', {}))
+
+            if next_cursor is None:
+                break
+            if reached_until:
                 break
         return comments, comment_summary
 
