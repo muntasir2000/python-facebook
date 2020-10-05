@@ -20,7 +20,7 @@ FB_POST_ATTACHMENTS = {
 }
 
 FB_POST_BASIC_FIELDS = {
-    "id", "attachments{{{}}}".format(",".join(FB_POST_ATTACHMENTS)),
+    "id", "from", "attachments{{{}}}".format(",".join(FB_POST_ATTACHMENTS)),
     "created_time", "full_picture", "icon", "message",
     "permalink_url", "picture", "shares", "status_type", "updated_time",
     # filter stream return all comments count

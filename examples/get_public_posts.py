@@ -8,16 +8,16 @@ from pyfacebook import Api
 
 # Use version 5+, Call API need app secret proof. So need provide your app secret.
 # If not have, you can just use version 4.0.
-APP_ID = "Your APP ID"
-APP_SECRET = "Your APP SECRET"
+# APP_ID = "Your APP ID"
+# APP_SECRET = "Your APP SECRET"
 
-ACCESS_TOKEN = "Your Access Token"
+ACCESS_TOKEN = "1330160143827784|XNa7iu-8NuHjiHxta3PoFwD_05s"
 
 
 def get_posts(page_username):
     api = Api(
-        app_id=APP_ID,
-        app_secret=APP_SECRET,
+        # app_id=APP_ID,
+        # app_secret=APP_SECRET,
         long_term_token=ACCESS_TOKEN,
     )
     data = api.get_page_posts(

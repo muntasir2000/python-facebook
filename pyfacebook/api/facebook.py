@@ -16,6 +16,7 @@ from pyfacebook.models import (
 from pyfacebook.api.base import BaseApi
 from pyfacebook.utils import constant
 from pyfacebook.utils.param_validation import enf_comma_separated
+from pyfacebook.utils.reformat_response import replace_from_keyword_in_json
 
 
 class Api(BaseApi):
@@ -224,6 +225,9 @@ class Api(BaseApi):
                 args=args,
                 next_cursor=next_cursor,
             )
+
+            data = replace_from_keyword_in_json(data=data)
+
             if return_json:
                 posts += data.get('data', [])
             else:
@@ -361,6 +365,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -395,6 +401,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -457,6 +465,8 @@ class Api(BaseApi):
                 args=args,
                 next_cursor=next_cursor
             )
+            data = replace_from_keyword_in_json(data=data)
+
             if return_json:
                 comments += data.get('data', [])
                 comment_summary = data.get('summary', {})
@@ -528,6 +538,8 @@ class Api(BaseApi):
                 next_cursor=next_cursor
             )
             reached_until = False
+
+            data = replace_from_keyword_in_json(data=data)
             this_iter_comments = [Comment.new_from_json_dict(item) for item in data.get('data', [])]
 
             for comment in this_iter_comments:
@@ -573,6 +585,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -607,6 +621,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -646,6 +662,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data['data']
         else:
@@ -683,6 +701,7 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
 
         res = {}
         for _id, p_data in iteritems(data):
@@ -739,6 +758,7 @@ class Api(BaseApi):
                 args=args,
                 next_cursor=next_cursor
             )
+            data = replace_from_keyword_in_json(data=data)
             if return_json:
                 videos += data.get('data', [])
             else:
@@ -780,6 +800,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -816,6 +838,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -850,6 +874,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -886,6 +912,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -932,6 +960,7 @@ class Api(BaseApi):
                 args=args,
                 next_cursor=next_cursor
             )
+            data = replace_from_keyword_in_json(data=data)
             if return_json:
                 albums += data.get('data', [])
             else:
@@ -973,6 +1002,8 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
+
         if return_json:
             return data
         else:
@@ -1009,6 +1040,7 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
         if return_json:
             return data
         else:
@@ -1054,6 +1086,7 @@ class Api(BaseApi):
                 args=args,
                 next_cursor=next_cursor
             )
+            data = replace_from_keyword_in_json(data=data)
             if return_json:
                 photos += data.get('data', [])
             else:
@@ -1095,6 +1128,7 @@ class Api(BaseApi):
         )
 
         data = self._parse_response(resp)
+        data = replace_from_keyword_in_json(data=data)
         if return_json:
             return data
         else:

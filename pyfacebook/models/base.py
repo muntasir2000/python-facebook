@@ -14,6 +14,7 @@ class BaseModel(object):
     def drop_extra_attrs(cls, data):
         attrs_attrs = getattr(cls, '__attrs_attrs__', None)
         attributes = {attr.name for attr in attrs_attrs}
+        # attributes.add('from')
         return {key: val for key, val in six.iteritems(data) if key in attributes}
 
     @classmethod

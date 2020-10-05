@@ -2,7 +2,6 @@
     function's to validate parameters.
 """
 import logging
-
 from typing import Optional, Union
 
 import pyfacebook
@@ -54,3 +53,6 @@ def enf_comma_separated(
         raise pyfacebook.PyFacebookError({
             "message": "Parameter ({0}) must be single str,comma-separated str,list,tuple or set".format(field),
         })
+
+
+

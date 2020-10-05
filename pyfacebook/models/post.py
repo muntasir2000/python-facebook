@@ -8,6 +8,7 @@ from typing import Optional, Dict
 from .base import BaseModel
 from .common import StoryAttachment
 from .mixins import CommentsSummaryField
+from .object_creator import ObjectCreator
 from .._compat import str
 
 
@@ -42,6 +43,7 @@ class Post(BaseModel, CommentsSummaryField):
 
     # base fields
     id = attrib(default=None, type=Optional[str])
+    object_creator = attrib(default=None, type=Optional[ObjectCreator], repr=False)
     backdated_time = attrib(default=None, type=Optional[str], repr=False)
     created_time = attrib(default=None, type=Optional[str], repr=False)
     full_picture = attrib(default=None, type=Optional[str], repr=False)
