@@ -481,13 +481,13 @@ class Api(BaseApi):
                 break
         return comments, comment_summary
 
-    def get_comments_by_object_until_date(self,
+    def get_comments_by_object_since_date(self,
                                object_id,  # type: str
                                summary=True,  # type: bool
                                fields=None,  # type: Optional[Union[str, List, Tuple, Set]]
                                # count=10,  # type: Optional[int]
                                limit=50,  # type: int
-                               until_date=None,  # type:
+                               since_date_str=None,  # type:
                                ):
         # type: (...) -> (List[Union[Comment, dict]], Union[CommentSummary, dict])
         """
@@ -514,10 +514,10 @@ class Api(BaseApi):
         if fields is None:
             fields = constant.FB_COMMENT_BASIC_FIELDS
 
-        if until_date is not None:
-            until_date_arrow = arrow.get(until_date)
+        if since_date_str is not None:
+            since_date_arrow = arrow.get(since_date_str).to('utc')
         else:
-            until_date_arrow = None
+            since_date_arrow = None
 
         args = {
             'fields': enf_comma_separated("fields", fields),
@@ -543,8 +543,8 @@ class Api(BaseApi):
             this_iter_comments = [Comment.new_from_json_dict(item) for item in data.get('data', [])]
 
             for comment in this_iter_comments:
-                created_time_arrow = arrow.get(comment.created_time)
-                if created_time_arrow < until_date_arrow:
+                created_time_arrow = arrow.get(comment.created_time).to('utc')
+                if created_time_arrow < since_date_arrow:
                     reached_until = True
                     break
                 comments.append(comment)

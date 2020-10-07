@@ -8,6 +8,8 @@ from typing import Optional
 from .base import BaseModel
 from .common import StoryAttachment
 from .._compat import str
+from .object_creator import ObjectCreator
+
 
 
 @attrs
@@ -32,6 +34,7 @@ class Comment(BaseModel):
 
     # base fields
     id = attrib(default=None, type=Optional[str])
+    object_creator = attrib(default=None, type=Optional[ObjectCreator], repr=False)
     can_like = attrib(default=None, type=Optional[bool], repr=False)
     can_comment = attrib(default=None, type=Optional[bool], repr=False)
     comment_count = attrib(default=None, type=Optional[int])

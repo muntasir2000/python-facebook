@@ -41,7 +41,7 @@ FB_POST_REACTIONS_FIELD = {
 }
 
 FB_COMMENT_BASIC_FIELDS = {
-    "id", "attachment", "created_time", "like_count",
+    "id", "from", "attachment", "created_time", "like_count",
     "can_comment", "can_like", "comment_count",
     "from", "message", "permalink_url",
 }

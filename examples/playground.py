@@ -18,4 +18,14 @@ def crawl_posts(page_id, since_timestamp, until_timestamp):
         print((p.object_creator.name))
 
 
-crawl_posts('135237519825044', arrow.get("2020-10-01").timestamp, arrow.get('2020-10-03'))
+def crawl_comments():
+    comments = graph_api.get_comments_by_object_since_date(object_id='135237519825044_4152298871452202', since_date_str='2020-10-07T14:25:26.543208+06:00')
+
+    for c in comments[0]:
+        print(c.message)
+        print(c.id)
+        print(arrow.get(c.created_time).to('Asia/Dhaka'))
+        # print(c.created_time)
+        print('----------')
+# crawl_posts('135237519825044', arrow.get("2020-10-01").timestamp, arrow.get('2020-10-03'))
+crawl_comments()
