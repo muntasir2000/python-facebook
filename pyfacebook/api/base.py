@@ -192,17 +192,28 @@ class BaseApi(object):
         # check path
         if not path.startswith("https"):
             path = self.base_url + path
-        try:
-            response = self.session.request(
-                method,
-                path,
-                timeout=self.__timeout,
-                params=args,
-                data=post_args,
-                proxies=self.proxies
-            )
-        except requests.HTTPError as e:
-            raise PyFacebookException(ErrorMessage(code=ErrorCode.HTTP_ERROR, message=e.args[0]))
+
+        while True:
+            try:
+                wait = False
+                response = self.session.request(
+                    method,
+                    path,
+                    timeout=self.__timeout,
+                    params=args,
+                    data=post_args,
+                    proxies=self.proxies
+                )
+                if response.json().get('error'):
+                    if response.json()['error'].get('is_transient'):
+                        logging.error("Probably Graph API limit reached. Sleeping for 5 minutes")
+                        wait = True
+                        time.sleep(300)
+                if not wait:
+                    break
+            except requests.HTTPError as e:
+                raise PyFacebookException(ErrorMessage(code=ErrorCode.HTTP_ERROR, message=e.args[0]))
+
         headers = response.headers
         self.rate_limit.set_limit(headers)
         if self.sleep_on_rate_limit:
